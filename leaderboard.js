@@ -1,9 +1,10 @@
 // Set up a collection to contain player information. On the server,
 // it is backed by a MongoDB collection named "players".
 
-Players = new Mongo.Collection("players");
+Players = new Mongo.Collection("opengames_players");
 
 if (Meteor.isClient) {
+  Session.setDefault('selected_players', []);
   Template.leaderboard.helpers({
     players: function () {
       return Players.find({}, { sort: { score: -1, name: 1 } });
@@ -37,8 +38,8 @@ if (Meteor.isClient) {
 if (Meteor.isServer) {
   Meteor.startup(function () {
     if (Players.find().count() === 0) {
-      var names = ["Ada Lovelace", "Grace Hopper", "Marie Curie",
-                   "Carl Friedrich Gauss", "Nikola Tesla", "Claude Shannon"];
+      var names = ["François Madrène", "Sarah Sommer", "Corine Maillard",
+                   "Cédric Nerger", "Melissa Declercq", "Richard Hitier"];
       _.each(names, function (name) {
         Players.insert({
           name: name,
